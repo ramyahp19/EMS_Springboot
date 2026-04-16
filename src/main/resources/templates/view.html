@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EMS - Employee Dashboard</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        padding: 40px;
+
+        background: url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80")
+        no-repeat center center/cover;
+
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(0,0,0,0.75), rgba(0,0,0,0.45));
+    }
+
+    /* floating glow */
+    .glow {
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        background: rgba(0,198,255,0.2);
+        filter: blur(90px);
+        border-radius: 50%;
+        top: 10%;
+        left: 5%;
+        animation: float 8s infinite ease-in-out;
+    }
+
+    @keyframes float {
+        0%,100% { transform: translateY(0); }
+        50% { transform: translateY(-40px); }
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+        width: 95%;
+        max-width: 1200px;
+        text-align: center;
+    }
+
+    /* HEADER */
+    h1 {
+        color: white;
+        font-size: 34px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: rgba(255,255,255,0.7);
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    /* TABLE CARD */
+    .table-wrapper {
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(15px);
+
+        border-radius: 18px;
+        overflow: hidden;
+
+        border: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 14px 12px;
+        text-align: center;
+        color: white;
+        font-size: 14px;
+    }
+
+    th {
+        background: rgba(0, 123, 255, 0.75);
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    tr {
+        transition: 0.3s ease;
+    }
+
+    tr:hover {
+        background: rgba(255,255,255,0.08);
+    }
+
+    /* ACTION BUTTONS */
+    .action-btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+
+        margin: 2px;
+        transition: 0.3s ease;
+    }
+
+    .edit-btn {
+        background: linear-gradient(135deg, #28a745, #1f7e34);
+    }
+
+    .delete-btn {
+        background: linear-gradient(135deg, #dc3545, #b02a37);
+    }
+
+    .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+    }
+
+    /* BACK BUTTON */
+    .back-btn {
+        margin-top: 25px;
+        padding: 12px 28px;
+
+        border: none;
+        border-radius: 10px;
+
+        font-size: 15px;
+        font-weight: 600;
+        color: white;
+
+        cursor: pointer;
+
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        transition: 0.3s ease;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        th, td {
+            font-size: 12px;
+            padding: 10px;
+        }
+    }
+
+</style>
+
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="container">
+
+    <h1>Employee Management Dashboard</h1>
+    <div class="subtitle">View, edit, and manage all employee records</div>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Salary</th>
+                <th>Department</th>
+                <th>DOJ</th>
+                <th>Actions</th>
+            </tr>
+
+            <tr th:each="emp : ${list}">
+                <td th:text="${emp.name}"></td>
+                <td th:text="${emp.mobile}"></td>
+                <td th:text="${emp.salary}"></td>
+                <td th:text="${emp.department}"></td>
+                <td th:text="${emp.doj}"></td>
+
+                <td>
+                    <a th:href="'/edit/' + ${emp.id}">
+                        <button class="action-btn edit-btn">Edit</button>
+                    </a>
+
+                    <a th:href="'/delete/' + ${emp.id}">
+                        <button class="action-btn delete-btn">Delete</button>
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <button class="back-btn" onclick="window.location.href='/'">
+        Back to Dashboard
+    </button>
+
+</div>
+
+<script th:if="${message}">
+    alert("[[${message}]]");
+</script>
+
+</body>
+</html>
